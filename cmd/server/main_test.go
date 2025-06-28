@@ -63,4 +63,3 @@ func TestHandleHealth(t *testing.T) {
 			contentType, "application/json")
 	}
 }
-
