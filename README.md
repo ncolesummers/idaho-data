@@ -6,7 +6,7 @@ A REST API for retrieving and analyzing public employee salary data from the Ida
 
 🚧 Under Development - Sprint 0 in progress
 
-[![codecov](https://codecov.io/gh/ncolesummers/idaho-data/graph/badge.svg?token=YOUR_TOKEN)](https://codecov.io/gh/ncolesummers/idaho-data)
+[![codecov](https://codecov.io/gh/ncolesummers/idaho-data/graph/badge.svg)](https://codecov.io/gh/ncolesummers/idaho-data)
 
 ## Quick Start
 
