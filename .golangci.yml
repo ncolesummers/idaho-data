@@ -1,0 +1,71 @@
+run:
+  timeout: 5m
+  tests: true
+
+linters:
+  enable:
+    - gofmt
+    - govet
+    - errcheck
+    - staticcheck
+    - ineffassign
+    - misspell
+    - gosec
+    - gosimple
+    - goconst
+    - gocyclo
+    - dupl
+    - unconvert
+    - goimports
+    - goprintffuncname
+    - nakedret
+    - noctx
+    - rowserrcheck
+    - stylecheck
+    - typecheck
+    - unused
+    - whitespace
+
+linters-settings:
+  gocyclo:
+    min-complexity: 15
+  dupl:
+    threshold: 100
+  goconst:
+    min-len: 2
+    min-occurrences: 2
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+  govet:
+    enable-all: true
+  maligned:
+    suggest-new: true
+  nolintlint:
+    require-explanation: true
+    require-specific: true
+
+issues:
+  exclude-dirs:
+    - vendor
+    - third_party
+    - testdata
+    - examples
+    - Godeps
+    - builtin
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - dupl
+        - gosec
+        - goconst
+    - path: cmd/
+      linters:
+        - gocyclo
+    - linters:
+        - lll
+      source: "^//go:generate "
+
+  exclude-use-default: false
+  max-issues-per-linter: 0
+  max-same-issues: 0
