@@ -1,0 +1,103 @@
+name: Epic
+description: Large feature or initiative spanning multiple stories
+title: "[EPIC] "
+labels: ["epic", "triage"]
+assignees: []
+projects: ["ncolesummers/3"]
+body:
+  - type: input
+    id: title
+    attributes:
+      label: Epic Title
+      description: Brief, descriptive title
+      placeholder: "Repository Setup and Configuration"
+    validations:
+      required: true
+      
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What is this epic trying to achieve?
+      placeholder: |
+        Set up a well-structured Go repository with CI/CD, development tools,
+        and documentation foundation to enable the team to start development
+        with consistent standards and best practices.
+    validations:
+      required: true
+      
+  - type: textarea
+    id: goals
+    attributes:
+      label: Goals
+      description: Key objectives and success criteria
+      placeholder: |
+        - Automated testing on every PR
+        - Consistent code formatting and linting
+        - Documentation framework in place
+        - Development environment reproducible
+        - Security scanning integrated
+    validations:
+      required: true
+      
+  - type: textarea
+    id: stories
+    attributes:
+      label: User Stories
+      description: List of stories that comprise this epic
+      placeholder: |
+        - [ ] As a developer, I want automated CI/CD...
+        - [ ] As a developer, I want consistent code formatting...
+        - [ ] As a new contributor, I want clear setup instructions...
+      
+  - type: dropdown
+    id: sprint
+    attributes:
+      label: Target Sprint(s)
+      description: When will this epic be completed?
+      multiple: true
+      options:
+        - Sprint 0 - Setup
+        - Sprint 1 - Foundation
+        - Sprint 2 - Real Data
+        - Sprint 3 - Event System
+        - Sprint 4 - Performance
+        - Sprint 5 - Monitoring
+        - Sprint 6 - Production
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - P0 - Critical
+        - P1 - High
+        - P2 - Medium
+    validations:
+      required: true
+      
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies & Risks
+      description: What could block or delay this epic?
+      placeholder: |
+        Dependencies:
+        - GitHub Actions minutes availability
+        - Team familiarity with Go tooling
+        
+        Risks:
+        - CI/CD complexity might delay other work
+        
+  - type: textarea
+    id: metrics
+    attributes:
+      label: Success Metrics
+      description: How will we measure success?
+      placeholder: |
+        - CI pipeline runs in < 5 minutes
+        - Zero manual steps for new developer setup
+        - 100% of PRs pass automated checks
+        - Documentation coverage > 90%

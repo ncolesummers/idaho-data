@@ -1,0 +1,105 @@
+name: Bug Report
+description: Report a bug in the Idaho Data API
+title: "[BUG] "
+labels: ["bug", "triage"]
+assignees: []
+projects: ["ncolesummers/3"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: Clear and concise description of the bug
+      placeholder: |
+        The /api/salaries endpoint returns a 500 error when the department
+        parameter contains special characters like apostrophes.
+    validations:
+      required: true
+      
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this issue?
+      placeholder: |
+        1. Send GET request to /api/salaries?dept=Governor's%20Office&year=2024
+        2. Observe the response
+        3. See 500 Internal Server Error instead of proper error message
+    validations:
+      required: true
+      
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What should happen instead?
+      placeholder: |
+        The API should either:
+        - Handle the apostrophe correctly and return data
+        - Return a 400 Bad Request with clear error message
+    validations:
+      required: true
+      
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happens?
+      placeholder: |
+        Server returns 500 Internal Server Error with generic error message
+        
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: How severe is this bug?
+      options:
+        - Critical - System unusable
+        - High - Major feature broken
+        - Medium - Feature partially broken
+        - Low - Minor issue
+    validations:
+      required: true
+      
+  - type: input
+    id: version
+    attributes:
+      label: API Version
+      description: Which version of the API?
+      placeholder: "v1.0.0"
+      
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Where did you encounter this bug?
+      placeholder: |
+        - Environment: Production / Staging / Local
+        - OS: macOS 14.2
+        - Client: curl 8.1.2
+        
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / Error Messages
+      description: Any relevant log output
+      render: shell
+      placeholder: |
+        ```
+        2024-01-15 10:30:45 ERROR [handlers] SQL injection attempt detected
+        2024-01-15 10:30:45 ERROR [handlers] panic: invalid character in query
+        ```
+        
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Workaround
+      description: Is there a temporary workaround?
+      placeholder: |
+        URL encode the apostrophe as %27 instead of using the literal character
+        
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other relevant information

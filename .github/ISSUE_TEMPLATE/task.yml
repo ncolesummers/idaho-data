@@ -1,0 +1,103 @@
+name: Task
+description: Technical task for implementing functionality
+title: "[TASK] "
+labels: ["task"]
+assignees: []
+projects: ["ncolesummers/3"]
+body:
+  - type: dropdown
+    id: type
+    attributes:
+      label: Task Type
+      options:
+        - Testing (Red Phase)
+        - Implementation (Green Phase)
+        - Refactoring
+        - Documentation
+        - Infrastructure
+        - Configuration
+        - Research
+    validations:
+      required: true
+      
+  - type: input
+    id: parent
+    attributes:
+      label: Parent Issue
+      description: Link to the parent story or epic
+      placeholder: "#123"
+      
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What needs to be done
+      placeholder: |
+        Create comprehensive test suite for the salary endpoint that covers:
+        - Valid requests with different parameter combinations
+        - Invalid parameter handling
+        - Edge cases and boundary conditions
+    validations:
+      required: true
+      
+  - type: textarea
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Specific items to complete
+      placeholder: |
+        - [ ] Create test file
+        - [ ] Write test cases for valid requests
+        - [ ] Write test cases for error conditions
+        - [ ] Verify tests fail initially
+        - [ ] Run with coverage report
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - P0 - Critical
+        - P1 - High
+        - P2 - Medium
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: size
+    attributes:
+      label: Time Estimate
+      options:
+        - 30 minutes
+        - 1 hour
+        - 2 hours
+        - 4 hours
+        - 1 day
+        - 2+ days
+    validations:
+      required: true
+      
+  - type: textarea
+    id: technical
+    attributes:
+      label: Technical Details
+      description: Any implementation notes or considerations
+      placeholder: |
+        - Use testify for assertions
+        - Mock HTTP requests with httptest
+        - Follow table-driven test pattern
+        
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Definition of Done
+      description: What constitutes completion?
+      value: |
+        - [ ] Code written and tested
+        - [ ] All tests passing
+        - [ ] Code coverage > 80%
+        - [ ] Linting passes
+        - [ ] PR created and linked
+        - [ ] Documentation updated if needed

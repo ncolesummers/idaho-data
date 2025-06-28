@@ -1,0 +1,99 @@
+name: Documentation
+description: Documentation improvements or additions
+title: "[DOCS] "
+labels: ["documentation", "good first issue"]
+assignees: []
+projects: ["ncolesummers/3"]
+body:
+  - type: dropdown
+    id: doc_type
+    attributes:
+      label: Documentation Type (Diataxis)
+      description: Which type of documentation is this?
+      options:
+        - Tutorial (Learning-oriented)
+        - How-to Guide (Task-oriented)
+        - Reference (Information-oriented)
+        - Explanation (Understanding-oriented)
+        - Other (README, CONTRIBUTING, etc.)
+    validations:
+      required: true
+      
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What documentation needs to be created or improved?
+      placeholder: |
+        Create a tutorial walking through setting up the development environment
+        from scratch, including all prerequisites and common troubleshooting steps.
+    validations:
+      required: true
+      
+  - type: textarea
+    id: audience
+    attributes:
+      label: Target Audience
+      description: Who will read this documentation?
+      placeholder: |
+        - New contributors who want to work on the project
+        - Experience level: Junior to mid-level developers
+        - Assumed knowledge: Basic Go and git experience
+      
+  - type: textarea
+    id: outline
+    attributes:
+      label: Proposed Outline
+      description: High-level structure of the documentation
+      placeholder: |
+        1. Prerequisites
+           - Go 1.21+ installation
+           - Docker Desktop
+           - Git configuration
+        2. Clone and Setup
+           - Fork vs clone decision
+           - Initial setup script
+        3. Running Tests
+           - Unit tests
+           - Integration tests
+        4. Common Issues
+           - Port conflicts
+           - Docker permissions
+      
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - P0 - Critical (blocking work)
+        - P1 - High (needed soon)
+        - P2 - Medium (nice to have)
+    validations:
+      required: true
+      
+  - type: input
+    id: location
+    attributes:
+      label: File Location
+      description: Where should this documentation live?
+      placeholder: "docs/tutorials/development-setup.md"
+      
+  - type: textarea
+    id: related
+    attributes:
+      label: Related Documentation
+      description: Links to related docs that might need updates
+      placeholder: |
+        - README.md (add link to this tutorial)
+        - CONTRIBUTING.md (reference this for setup)
+        
+  - type: textarea
+    id: examples
+    attributes:
+      label: Code Examples Needed
+      description: What code examples should be included?
+      placeholder: |
+        - Example .env file
+        - Docker compose commands
+        - Make targets
+        - Test execution commands

@@ -1,0 +1,101 @@
+name: User Story
+description: Define a new feature from user perspective
+title: "[STORY] "
+labels: ["story", "triage"]
+assignees: []
+projects: ["ncolesummers/3"]
+body:
+  - type: textarea
+    id: story
+    attributes:
+      label: User Story
+      description: As a [type of user], I want [goal] so that [benefit]
+      placeholder: |
+        As a data analyst
+        I want to query salary data by department
+        So that I can analyze compensation patterns
+    validations:
+      required: true
+      
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: List the conditions that must be met
+      placeholder: |
+        - [ ] Query returns JSON data
+        - [ ] Parameters are validated
+        - [ ] Errors return proper status codes
+        - [ ] Response time < 200ms for cached queries
+        - [ ] API documentation updated
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How critical is this story?
+      options:
+        - P0 - Critical
+        - P1 - High
+        - P2 - Medium
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: size
+    attributes:
+      label: Story Points
+      description: Estimated complexity
+      options:
+        - XS (1 point)
+        - S (2 points)
+        - M (3 points)
+        - L (5 points)
+        - XL (8 points)
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: sprint
+    attributes:
+      label: Target Sprint
+      options:
+        - Sprint 0 - Setup
+        - Sprint 1 - Foundation
+        - Sprint 2 - Real Data
+        - Sprint 3 - Event System
+        - Sprint 4 - Performance
+        - Sprint 5 - Monitoring
+        - Sprint 6 - Production
+        - Backlog
+    validations:
+      required: true
+      
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Implementation Tasks
+      description: Break down into TDD tasks (Red-Green-Refactor)
+      placeholder: |
+        - [ ] Write failing tests for feature
+        - [ ] Implement minimum code to pass tests
+        - [ ] Refactor for clarity and performance
+        - [ ] Update documentation
+        - [ ] Add integration tests
+      
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: List any blockers or prerequisites
+      placeholder: |
+        - Requires Issue #X to be completed
+        - Needs data source access
+        
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Notes
+      description: Any other relevant information
