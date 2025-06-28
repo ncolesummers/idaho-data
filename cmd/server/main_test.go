@@ -1,13 +1,14 @@
 package main
 
 import (
+	"context"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 )
 
 func TestHandleRoot(t *testing.T) {
-	req, err := http.NewRequest("GET", "/", nil)
+	req, err := http.NewRequestWithContext(context.Background(), "GET", "/", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -36,7 +37,7 @@ func TestHandleRoot(t *testing.T) {
 }
 
 func TestHandleHealth(t *testing.T) {
-	req, err := http.NewRequest("GET", "/health", nil)
+	req, err := http.NewRequestWithContext(context.Background(), "GET", "/health", nil)
 	if err != nil {
 		t.Fatal(err)
 	}

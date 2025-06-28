@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 func main() {
@@ -16,18 +17,30 @@ func main() {
 	http.HandleFunc("/", handleRoot)
 	http.HandleFunc("/health", handleHealth)
 
+	server := &http.Server{
+		Addr:         ":" + port,
+		Handler:      nil,
+		ReadTimeout:  15 * time.Second,
+		WriteTimeout: 15 * time.Second,
+		IdleTimeout:  60 * time.Second,
+	}
+
 	log.Printf("Starting Idaho Data API server on port %s", port)
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
+	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }
 
 func handleRoot(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprintf(w, `{"message":"Welcome to Idaho Data API","version":"0.1.0"}`)
+	if _, err := fmt.Fprintf(w, `{"message":"Welcome to Idaho Data API","version":"0.1.0"}`); err != nil {
+		log.Printf("Failed to write response: %v", err)
+	}
 }
 
 func handleHealth(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprintf(w, `{"status":"healthy","service":"idaho-data-api"}`)
+	if _, err := fmt.Fprintf(w, `{"status":"healthy","service":"idaho-data-api"}`); err != nil {
+		log.Printf("Failed to write response: %v", err)
+	}
 }

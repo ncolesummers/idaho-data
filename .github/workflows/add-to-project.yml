@@ -1,0 +1,206 @@
+name: Add Issues to Project Board
+
+on:
+  issues:
+    types:
+      - opened
+      - reopened
+  pull_request:
+    types:
+      - opened
+      - reopened
+
+jobs:
+  add-to-project:
+    name: Add to Project Board
+    runs-on: ubuntu-latest
+    permissions:
+      issues: read
+      pull-requests: read
+      repository-projects: write
+      contents: read
+    steps:
+      - name: Add to project
+        uses: actions/add-to-project@v1.0.2
+        with:
+          # Project URL from gh project list output
+          project-url: https://github.com/users/ncolesummers/projects/3
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Add labels based on issue type
+        if: ${{ github.event_name == 'issues' }}
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue = context.payload.issue;
+            const labels = [];
+            
+            // Add labels based on issue title or body
+            const title = issue.title.toLowerCase();
+            const body = (issue.body || '').toLowerCase();
+            
+            // Check for task types
+            if (title.includes('[task]')) {
+              labels.push('task');
+            } else if (title.includes('[story]') || title.includes('[user story]')) {
+              labels.push('user-story');
+            } else if (title.includes('[epic]')) {
+              labels.push('epic');
+            } else if (title.includes('[bug]')) {
+              labels.push('bug');
+            } else if (title.includes('[docs]')) {
+              labels.push('documentation');
+            }
+            
+            // Check for sprint labels
+            if (body.includes('sprint-0') || title.includes('sprint-0')) {
+              labels.push('sprint-0');
+            } else if (body.includes('sprint-1') || title.includes('sprint-1')) {
+              labels.push('sprint-1');
+            }
+            
+            // Check for priority
+            if (body.includes('p0') || body.includes('priority: p0')) {
+              labels.push('P0');
+            } else if (body.includes('p1') || body.includes('priority: p1')) {
+              labels.push('P1');
+            } else if (body.includes('p2') || body.includes('priority: p2')) {
+              labels.push('P2');
+            }
+            
+            // Add labels if any were identified
+            if (labels.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: labels
+              });
+            }
+
+  update-project-fields:
+    name: Update Project Fields
+    runs-on: ubuntu-latest
+    needs: add-to-project
+    if: ${{ github.event_name == 'issues' }}
+    permissions:
+      issues: read
+      repository-projects: write
+    steps:
+      - name: Update project item fields
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue = context.payload.issue;
+            const projectId = 'PVT_kwHOAVwHTc4A8lgA'; // Idaho Government Data project
+            
+            try {
+              // Get the item that was just added to the project
+              const query = `
+                query($projectId: ID!, $contentId: ID!) {
+                  node(id: $projectId) {
+                    ... on ProjectV2 {
+                      items(first: 1, contentId: $contentId) {
+                        nodes {
+                          id
+                        }
+                      }
+                      fields(first: 20) {
+                        nodes {
+                          ... on ProjectV2Field {
+                            id
+                            name
+                          }
+                          ... on ProjectV2SingleSelectField {
+                            id
+                            name
+                            options {
+                              id
+                              name
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              `;
+              
+              const variables = {
+                projectId: projectId,
+                contentId: issue.node_id
+              };
+              
+              const result = await github.graphql(query, variables);
+              
+              if (result.node && result.node.items.nodes.length > 0) {
+                const itemId = result.node.items.nodes[0].id;
+                const fields = result.node.fields.nodes;
+                
+                // Find Status field and set to "Todo" or "Backlog"
+                const statusField = fields.find(f => f.name === 'Status');
+                if (statusField && statusField.options) {
+                  const todoOption = statusField.options.find(o => o.name === 'Todo' || o.name === 'Backlog');
+                  if (todoOption) {
+                    await github.graphql(`
+                      mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $value: ProjectV2FieldValue!) {
+                        updateProjectV2ItemFieldValue(
+                          input: {
+                            projectId: $projectId,
+                            itemId: $itemId,
+                            fieldId: $fieldId,
+                            value: $value
+                          }
+                        ) {
+                          projectV2Item {
+                            id
+                          }
+                        }
+                      }
+                    `, {
+                      projectId: projectId,
+                      itemId: itemId,
+                      fieldId: statusField.id,
+                      value: { singleSelectOptionId: todoOption.id }
+                    });
+                  }
+                }
+                
+                // Set Priority field if P0, P1, or P2 label exists
+                const priorityField = fields.find(f => f.name === 'Priority');
+                if (priorityField && priorityField.options && issue.labels) {
+                  const priorityLabel = issue.labels.find(l => ['P0', 'P1', 'P2'].includes(l.name));
+                  if (priorityLabel) {
+                    const priorityOption = priorityField.options.find(o => o.name === priorityLabel.name);
+                    if (priorityOption) {
+                      await github.graphql(`
+                        mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $value: ProjectV2FieldValue!) {
+                          updateProjectV2ItemFieldValue(
+                            input: {
+                              projectId: $projectId,
+                              itemId: $itemId,
+                              fieldId: $fieldId,
+                              value: $value
+                            }
+                          ) {
+                            projectV2Item {
+                              id
+                            }
+                          }
+                        }
+                      `, {
+                        projectId: projectId,
+                        itemId: itemId,
+                        fieldId: priorityField.id,
+                        value: { singleSelectOptionId: priorityOption.id }
+                      });
+                    }
+                  }
+                }
+              }
+            } catch (error) {
+              console.error('Error updating project fields:', error);
+              // Don't fail the workflow if field updates fail
+            }

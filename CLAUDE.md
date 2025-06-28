@@ -151,3 +151,18 @@ Default port is 8080. Server provides basic logging to stdout.
   1. Review an open issue using the `gh` CLI
   2. Complete tasks in the current sprint one user story at a time, following all acceptance criteria. Use a new branch for each story
   3. Finish the user story by creating a pull request
+
+### Project Board Automation
+- New issues are automatically added to the project board via GitHub Actions
+- To manually sync issues to the project board:
+  ```bash
+  # Add all open issues
+  ./scripts/add-issues-to-project.sh
+  
+  # Add specific issues
+  ./scripts/add-issues-to-project.sh 1,2,3
+  
+  # Or trigger the workflow manually
+  gh workflow run sync-issues-to-project.yml
+  ```
+- Project board: https://github.com/users/ncolesummers/projects/3

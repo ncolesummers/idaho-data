@@ -119,6 +119,13 @@ lint: ## Run golangci-lint
 	golangci-lint run ./...
 	@echo '$(COLOR_GREEN)Linting complete$(COLOR_NC)'
 
+.PHONY: lint-fix
+lint-fix: ## Run golangci-lint with auto-fix
+	@echo '$(COLOR_YELLOW)Running golangci-lint with auto-fix...$(COLOR_NC)'
+	@which golangci-lint > /dev/null || (echo '$(COLOR_YELLOW)Installing golangci-lint...$(COLOR_NC)' && go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest)
+	golangci-lint run --fix ./...
+	@echo '$(COLOR_GREEN)Linting with fixes complete$(COLOR_NC)'
+
 # Dependency commands
 .PHONY: deps
 deps: ## Download dependencies
