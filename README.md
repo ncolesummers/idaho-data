@@ -10,14 +10,41 @@ A REST API for retrieving and analyzing public employee salary data from the Ida
 
 ```bash
 # Build the project
-go build -o bin/server cmd/server/main.go
+make build
 
 # Run the server
-./bin/server
+make run
 
 # Test endpoints
 curl http://localhost:8080/
 curl http://localhost:8080/health
+```
+
+## Available Commands
+
+Run `make help` to see all available commands. Common commands include:
+
+```bash
+# Development
+make build          # Build the binary
+make run            # Build and run the application
+make test           # Run all tests
+make test-coverage  # Run tests with coverage
+make fmt            # Format all Go files
+make lint           # Run golangci-lint
+make check          # Run all checks (fmt, vet, lint, test)
+
+# Dependencies
+make deps           # Download dependencies
+make deps-tidy      # Run go mod tidy
+
+# Docker
+make docker-build   # Build Docker image
+make docker-run     # Run Docker container
+
+# Other
+make clean          # Remove build artifacts
+make help           # Display all available commands
 ```
 
 ## Project Structure
