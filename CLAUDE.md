@@ -103,9 +103,23 @@ Migrations will be in `migrations/` directory (not yet implemented).
 - ✅ Basic HTTP server
 - ✅ Build tooling (Makefile)
 - ✅ Documentation framework
+- ✅ CI/CD pipeline (GitHub Actions)
 - ⏳ Business logic implementation
 - ⏳ Database connectivity
 - ⏳ API endpoints
+
+## CI/CD Pipeline
+
+GitHub Actions workflow runs on:
+- Push to `main` or `develop` branches
+- Pull requests to `main`
+- Manual trigger via workflow_dispatch
+
+CI jobs include:
+- **Build**: Compile, vet, format check
+- **Test**: Unit tests with coverage
+- **Lint**: golangci-lint analysis
+- **Security**: Trivy vulnerability scanning
 
 ## Quick Debugging
 
