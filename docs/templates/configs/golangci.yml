@@ -1,0 +1,81 @@
+# .golangci.yml
+run:
+  # Timeout for analysis
+  timeout: 5m
+  
+  # Include test files
+  tests: true
+  
+  # Which directories to skip
+  skip-dirs:
+    - vendor
+    - third_party
+    - testdata
+    - examples
+    - pkg/generated
+
+linters:
+  enable:
+    # Default linters
+    - govet        # Reports suspicious constructs
+    - errcheck     # Checks for unchecked errors
+    - staticcheck  # Staticcheck is a go vet on steroids
+    - gosimple     # Suggests code simplifications
+    - ineffassign  # Detects ineffectual assignments
+    - unused       # Checks for unused code
+    
+    # Additional linters
+    - gofmt        # Checks formatting
+    - goimports    # Checks imports formatting
+    - misspell     # Finds commonly misspelled words
+    - unconvert    # Detects unnecessary type conversions
+    - prealloc     # Suggests preallocations
+    - nakedret     # Finds naked returns
+    - gocyclo      # Checks cyclomatic complexity
+    - dupl         # Finds code duplications
+    - goconst      # Finds repeated strings
+    - gosec        # Security checks
+    - bodyclose    # Checks HTTP response body is closed
+
+linters-settings:
+  gofmt:
+    simplify: true
+    
+  goimports:
+    local-prefixes: github.com/ncolesummers/idaho-data
+    
+  misspell:
+    locale: US
+    
+  goconst:
+    min-len: 3
+    min-occurrences: 3
+    
+  gocyclo:
+    min-complexity: 15
+    
+  dupl:
+    threshold: 100
+    
+  govet:
+    check-shadowing: true
+          
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+
+issues:
+  max-issues-per-linter: 50
+  max-same-issues: 3
+  
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - gocyclo
+        - errcheck
+        - dupl
+        - gosec
+        - goconst
+  
+  new: false
+  fix: false

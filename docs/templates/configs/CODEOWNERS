@@ -1,0 +1,31 @@
+# .github/CODEOWNERS
+# This file defines code ownership for automatic review requests
+
+# Global owners (review everything)
+* @teamlead @senior-dev
+
+# Frontend code
+/frontend/ @frontend-team
+/src/components/ @ui-team
+
+# Backend code
+/api/ @backend-team
+/pkg/ @backend-team
+
+# Database changes
+/migrations/ @dba-team @backend-team
+*.sql @dba-team
+
+# Configuration and CI/CD
+/.github/ @devops-team
+/Dockerfile @devops-team
+/kubernetes/ @devops-team
+/.golangci.yml @teamlead
+
+# Documentation
+/docs/ @docs-team
+*.md @docs-team
+
+# Security-sensitive files
+/security/ @security-team
+/auth/ @security-team @backend-team
